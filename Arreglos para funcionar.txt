@@ -1,0 +1,18 @@
+
+
+    I have fixed this issue by changing a few lines in extract.py
+
+    cipher_url = [
+                    parse_qs(formats[i]["cipher"]) for i, data in enumerate(formats)
+                ]
+
+    cipher_url = [
+                    parse_qs(formats[i]["signatureCipher"]) for i, data in enumerate(formats)
+                ]
+
+---------------
+pip3 uninstall pytube3
+and then re-installed via
+git clone git://github.com/nficano/pytube.git
+cd pytube
+install .
