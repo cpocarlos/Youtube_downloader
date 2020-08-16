@@ -30,10 +30,9 @@ def run(listavideos):
         music = yt.streams.first()
         # gets the filename of the first audio stream
         default_filename = music.default_filename
-        print("Descargando " + default_filename + "...")
+        print("\n\tDescargando " + default_filename + "Por favor espera...")
         # downloads first audio stream
         music.download(filepath)
-        print("\n\tDescargando por favor espera...\n")
         contadorVideosBajados += 1
         print("Descargado {} de {}" .format(contadorVideosBajados,len(listavideos)))
 
@@ -44,9 +43,14 @@ if __name__ == "__main__":
     # root.filename =  fdialog.askopenfilename(title = "Selecciona fichero",filetypes = (("txt files","*.txt"),("all files","*.*")))    
     # fichero = open(root.filename,'r')
    
-    fichero = open("1 - Pega aqui videos a descargar.txt",'r')
-    urls_bruto = fichero.readlines()
-    fichero.close()
+    try:
+        fichero = open("1 - Pega aqui videos a descargar.txt",'r')
+        urls_bruto = fichero.readlines()
+        fichero.close()
+    except:
+        print("No se encuentra el fichero \"1 - Pega aqui videos a descargar.txt\"\nPega en el fichero los videos a descargar")
+        messagebox.showinfo(message="No hay videos para descargar en el fichero", title="Fichero vacio")
+
 
     if len(urls_bruto) == 0:
         print("No hay videos para descargar en el fichero \"1 - Pega aqui videos a descargar.txt\"\nPega en el fichero los videos a descargar")
