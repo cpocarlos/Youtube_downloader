@@ -30,7 +30,7 @@ def run(listavideos):
         music = yt.streams.first()
         # gets the filename of the first audio stream
         default_filename = music.default_filename
-        print("\n\tDescargando " + default_filename + "Por favor espera...")
+        print("\n\tDescargando " + default_filename + "...Por favor espera...")
         # downloads first audio stream
         music.download(filepath)
         contadorVideosBajados += 1
@@ -70,7 +70,8 @@ if __name__ == "__main__":
         try:
             pl = Playlist(url)
             #En caso de exito añadimos cada URL a la lista de URL
-            es_playlist = True            
+            if len(pl) > 0:
+                es_playlist = True            
         except KeyError:
             print("Importamos videos")            
         
