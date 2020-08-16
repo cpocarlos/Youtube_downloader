@@ -2,7 +2,8 @@ import os
 import subprocess
 from tkinter import *
 from tkinter import filedialog as fdialog
-
+from tkinter import messagebox
+import sys
 from pytube import Playlist, YouTube
 
 lista_url = []
@@ -15,14 +16,16 @@ def run(listavideos):
     print("Se han importado {} videos." .format(len(listavideos)))
 
     root = Tk()
-    filepath = fdialog.askdirectory(title="Carpeta Destino")
+    cuadroTexto = Label(root, text="Selecciona carpeta donde se van a guardar los videos", fg="red", font=("Helvetica", 16))
+    cuadroTexto.pack()
+    filepath = fdialog.askdirectory(title="Elige carpeta donde se van a guardar los videos")
     root.destroy()
     # get linked list of links in the playlist
     #links = pl.parse_links()
     # download each item in the list
     for url in listavideos:
         # converts the link to a YouTube object
-        yt = YouTube(l)
+        yt = YouTube(url)
         # takes first stream; since ffmpeg will convert to mp3 anyway
         music = yt.streams.first()
         # gets the filename of the first audio stream
@@ -30,19 +33,32 @@ def run(listavideos):
         print("Descargando " + default_filename + "...")
         # downloads first audio stream
         music.download(filepath)
+        print("\n\tDescargando por favor espera...\n")
         contadorVideosBajados += 1
         print("Descargado {} de {}" .format(contadorVideosBajados,len(listavideos)))
 
 if __name__ == "__main__":
     #ruta_fichero = input("Indica el fichero con las URL de playlist a descargar: ")
-    root = Tk()
-    root.filename =  fdialog.askopenfilename(title = "Selecciona fichero",filetypes = (("txt files","*.txt"),("all files","*.*")))    
-
-    fichero = open(root.filename,'r')
+    
+    # root = Tk()
+    # root.filename =  fdialog.askopenfilename(title = "Selecciona fichero",filetypes = (("txt files","*.txt"),("all files","*.*")))    
+    # fichero = open(root.filename,'r')
+   
+    fichero = open("1 - Pega aqui videos a descargar.txt",'r')
     urls_bruto = fichero.readlines()
-
     fichero.close()
-    root.destroy()
+
+    if len(urls_bruto) == 0:
+        print("No hay videos para descargar en el fichero \"1 - Pega aqui videos a descargar.txt\"\nPega en el fichero los videos a descargar")
+        messagebox.showinfo(message="No hay videos para descargar en el fichero", title="Fichero vacio")
+        sys.exit(0)
+
+    #Vaciamos el fichero para la siguiente vez
+    fichero = open("1 - Pega aqui videos a descargar.txt",'w')
+    fichero.truncate(0)
+    fichero.close
+    
+    #root.destroy()
 
     for url in urls_bruto:
         es_playlist = False
@@ -52,7 +68,7 @@ if __name__ == "__main__":
             #En caso de exito añadimos cada URL a la lista de URL
             es_playlist = True            
         except KeyError:
-            print("No se trataba de una playlist")
+            print("Importamos videos")            
         
         if es_playlist == True:
             for video in pl:
