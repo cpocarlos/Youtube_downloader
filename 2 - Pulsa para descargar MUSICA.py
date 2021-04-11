@@ -44,7 +44,7 @@ def run(listavideos):
         print("Converting to mp3....")
         # converts mp4 audio to mp3 audio
         try:
-            subprocess.run(['ffmpeg', '-i', 
+            subprocess.run(['ffmpeg', '-y', '-i', 
             os.path.join(filepath, default_filename),
             os.path.join(filepath, new_filename)
             ])            
